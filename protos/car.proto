@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package car;
+
+service CarService {
+    rpc FindOne (CarById) returns (Car) {}
+}
+
+message CarById {
+    int32 id = 1;
+}
+
+message Car {
+    int32 id = 1;
+    string name = 2;
+}
