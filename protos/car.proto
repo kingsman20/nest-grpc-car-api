@@ -4,6 +4,8 @@ package car;
 
 service CarService {
     rpc FindOne (CarById) returns (Car) {}
+    rpc Login (UserDetails) returns (UserData) {}
+    rpc Register (NewUser) returns (UserData) {}
 }
 
 message CarById {
@@ -13,4 +15,31 @@ message CarById {
 message Car {
     int32 id = 1;
     string name = 2;
+}
+
+message UserDetails {
+    int32 id = 1;
+    string name = 2;
+    string email = 3;
+    string createdAt = 4;
+    string updatedAt = 5;
+}
+
+message User {
+    int32 id = 1;
+    string name = 2;
+    string email = 3;
+    string createdAt = 4;
+    string updatedAt = 5;
+}
+
+message UserData {
+    User user = 1;
+    string token = 2;
+}
+
+message NewUser {
+    string name = 1;
+    string email = 2;
+    string password = 3;
 }
