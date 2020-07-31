@@ -30,7 +30,7 @@ export class Car extends Model<Car> {
     vin: string;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false,
     })
     price: number;
