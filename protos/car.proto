@@ -1,20 +1,63 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 package car;
 
 service CarService {
-    rpc FindOne (CarById) returns (Car) {}
+    rpc FindAll (google.protobuf.Empty) returns (CarList) {}
     rpc Login (UserDetails) returns (UserData) {}
     rpc Register (NewUser) returns (UserData) {}
+    rpc FindOne (CarById) returns (Car) {}
+    rpc CreateCar (CarDetails) returns (Car) {}
+    rpc UpdateCar (CarDetails) returns (UpdateCarOutput) {}
+}
+
+message CarList {
+    repeated Car car = 1;
 }
 
 message CarById {
     int32 id = 1;
 }
 
+message CarDetails {
+    string make = 1;
+    string model = 2;
+    string features = 3;
+    string vin = 4;
+    int32 price = 5;
+    string location = 6;
+    int32 id = 7;
+}
+
+message UpdateCarInput {
+    string carId = 1;
+    string make = 2;
+    string model = 3;
+    string features = 4;
+    string vin = 5;
+    int32 price = 6;
+    string location = 7;
+    int32 id = 8;
+}
+
+message UpdateCarOutput {
+    int32 numberOfAffectedRows = 1;
+    Car updatedCar = 2;
+}
+
 message Car {
     int32 id = 1;
-    string name = 2;
+    string make = 2;
+    string model = 3;
+    string features = 4;
+    string vin = 5;
+    int32 price = 6;
+    string location = 7;
+    int32 userId = 8;
+    string createdAt = 9;
+    string updatedAt = 10;
 }
 
 message UserDetails {

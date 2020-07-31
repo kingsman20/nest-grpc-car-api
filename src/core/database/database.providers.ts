@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../constants';
 import { databaseConfig } from './database.config';
 import { User } from '../../users/user.entity';
-// import { Post } from '../../modules/posts/post.entity';
+import { Car } from '../../cars/car.entity';
 
 export const databaseProviders = [
     {
@@ -24,7 +24,7 @@ export const databaseProviders = [
                     config = databaseConfig.development;
             }
             const sequelize = new Sequelize(config);
-            sequelize.addModels([User]);
+            sequelize.addModels([User, Car]);
             await sequelize.sync();
             return sequelize;
         },

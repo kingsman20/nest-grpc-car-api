@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { ClientsModule } from '@nestjs/microservices';
 import { grpcClientOptions } from '../grpc-client.options';
 import { CarsController } from './cars.controller';
-import { CarsService } from './cars.service';
+import { CarsService as CarsDataService } from './cars.service';
+import { carsProviders } from './cars.providers';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { CarsService } from './cars.service';
     ]),
   ],
   controllers: [CarsController],
-  providers: [CarsService]
+  providers: [CarsDataService, ...carsProviders],
 })
 export class CarsModule {}

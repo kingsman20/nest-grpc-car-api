@@ -34,19 +34,13 @@ export class AuthController implements OnModuleInit {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async loginUser(@Request() req) {
-      return await this.carService.login(req.user)
+    return await this.carService.login(req.user);
   }
-
-  // @UseGuards(AuthGuard('local'))
-//   @Post('login')
-//   async login(@Request() req) {
-//       return await this.authService.login(req.user);
-//   }
 
   @UseGuards(DoesUserExist)
   @Post('signup')
   async signUp(@Body() user: UserDto) {
-      return await this.carService.register(user);
+    return await this.carService.register(user);
   }
 
   // GPRC Server methods implementation
@@ -59,5 +53,4 @@ export class AuthController implements OnModuleInit {
   async register(data: UserDto): Promise<UserData> {
     return await this.authService.create(data);
   }
-
 }
