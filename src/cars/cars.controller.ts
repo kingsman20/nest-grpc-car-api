@@ -65,6 +65,23 @@ export class CarsController implements OnModuleInit {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get(':carId/buy')
+  async buy(
+    @Param('carId') carId: number,
+    @Request() req,
+  ) {
+
+    const { balance } = req.user;
+
+    const purchaseDetails = {
+      balance,
+      carId
+    }
+
+    return await this.carService.buyCar(purchaseDetails);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Put(':carId')
   async update(
     @Param('carId') carId: number,
@@ -138,45 +155,18 @@ export class CarsController implements OnModuleInit {
       price,
       location,
     };
-    console.log(userId);
-    console.log(carData);
-    console.log(carId);
 
     return await this.carsDataService.update(carId, carData, userId);
   }
+
+  @GrpcMethod('CarService')
+  async buyCar(data) {
+
+    const {balance, carId} = data
+
+    const res = await this.carsDataService.buy(balance, carId);
+
+    return res;
+
+  }
 }
-
-// import { Controller, OnModuleInit, Get, Param, Inject } from '@nestjs/common';
-// import { GrpcMethod, ClientGrpc } from '@nestjs/microservices';
-// import { Observable } from 'rxjs';
-// import { CarById } from './interfaces/car-by-id.interface';
-// import { Car } from './interfaces/car.interface';
-// import { CarService } from './interfaces/car-service.interface';
-
-// @Controller('cars')
-// export class CarsController implements OnModuleInit {
-//   private readonly items: Car[] = [
-//     { id: 1, name: 'John' },
-//     { id: 2, name: 'Doe' },
-//   ];
-
-//   private carService: CarService;
-
-//   constructor(@Inject('CAR_PACKAGE') private readonly client: ClientGrpc) {}
-
-//   onModuleInit() {
-//     this.carService = this.client.getService<CarService>('CarService');
-//   }
-
-//   // HTTP Endpoints
-//   @Get(':id')
-//   getById(@Param('id') id: string): Observable<Car> {
-//     return this.carService.findOne({ id: +id });
-//   }
-
-//   // GPRC Methods
-//   @GrpcMethod('CarService')
-//   findOne(data: CarById, metadata: any): Car {
-//     return this.items.find(({ id }) => id === data.id);
-//   }
-// }

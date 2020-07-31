@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 
 import { Car } from './car.entity';
 import { CarDto } from './dto/car.dto';
@@ -38,5 +38,19 @@ export class CarsService {
       { where: { id, userId }, returning: true },
     );
     return { numberOfAffectedRows, updatedCar };
+  }
+
+  async buy(balance, id) {
+
+    const carData = await this.carRepository.findOne({where: {id}})
+    console.log(carData['dataValues'].price);
+
+    if (balance > carData['dataValues'].price) {
+      // Deduct account
+      // Send confirmation mail
+    }
+
+    return carData['dataValues'];
+    
   }
 }

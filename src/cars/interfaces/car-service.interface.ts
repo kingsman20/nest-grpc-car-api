@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import { CarById } from './car-by-id.interface';
 import { Car } from './car.interface';
 import { CarDetails } from './car-details.interface';
+import { PurchaseDetails } from './purchase-details.interface';
 
 export interface CarService {
   findAll(): Observable<Car>;
@@ -13,4 +14,5 @@ export interface CarService {
     numberOfAffectedRows: number;
     updatedCar: Car;
   }>;
+  buyCar(data: PurchaseDetails): Observable<Car>;
 }
