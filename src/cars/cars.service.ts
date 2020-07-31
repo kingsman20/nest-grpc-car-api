@@ -32,7 +32,7 @@ export class CarsService {
   async update(id, data, userId) {
     const [
       numberOfAffectedRows,
-      [updatedCar],
+      updatedCar,
     ] = await this.carRepository.update(
       { ...data },
       { where: { id, userId }, returning: true },

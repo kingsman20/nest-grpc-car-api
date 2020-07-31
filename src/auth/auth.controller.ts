@@ -6,6 +6,8 @@ import {
   Request,
   OnModuleInit,
   Inject,
+  Put,
+  NotFoundException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GrpcMethod, ClientGrpc } from '@nestjs/microservices';
@@ -43,6 +45,17 @@ export class AuthController implements OnModuleInit {
     return await this.carService.register(user);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Put('topup')
+  async create(@Body() amount, @Request() req) {
+    const { id } = req.user;
+    const topUpDetails = {
+      ...amount,
+      id,
+    };
+    return await this.carService.topUp(topUpDetails);
+  }
+
   // GPRC Server methods implementation
   @GrpcMethod('CarService')
   async login(data: UserDetails): Promise<UserData> {
@@ -52,5 +65,25 @@ export class AuthController implements OnModuleInit {
   @GrpcMethod('CarService')
   async register(data: UserDto): Promise<UserData> {
     return await this.authService.create(data);
+  }
+
+  @GrpcMethod('CarService')
+  async topUp(data) {
+    const { id } = data;
+    const { balance, currency } = data;
+
+    const amount = {
+      balance,
+      currency,
+    };
+
+    const res = await this.authService.topUp(amount, id);
+    console.log(res);
+
+    if (res.numberOfAffectedRows === 0) {
+      throw new NotFoundException('Error in adding money to your account');
+    }
+
+    return res.resultData;
   }
 }

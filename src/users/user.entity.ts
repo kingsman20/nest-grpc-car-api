@@ -18,4 +18,16 @@ export class User extends Model<User> {
         allowNull: false,
     })
     password: string;
+
+    @Column({
+        type: DataType.INTEGER,
+        defaultValue: 0,
+    })
+    balance: number;
+
+    @Column({
+        type: DataType.STRING,
+        defaultValue: 'NGN'
+    })
+    currency: string;
 }

@@ -1,17 +1,18 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
-
 package car;
 
 service CarService {
-    rpc FindAll (google.protobuf.Empty) returns (CarList) {}
     rpc Login (UserDetails) returns (UserData) {}
     rpc Register (NewUser) returns (UserData) {}
+    rpc FindAll (Empty) returns (CarList) {}
     rpc FindOne (CarById) returns (Car) {}
     rpc CreateCar (CarDetails) returns (Car) {}
     rpc UpdateCar (CarDetails) returns (UpdateCarOutput) {}
+    rpc TopUp (Amount) returns (User) {}
 }
+
+message Empty {}
 
 message CarList {
     repeated Car car = 1;
@@ -72,8 +73,10 @@ message User {
     int32 id = 1;
     string name = 2;
     string email = 3;
-    string createdAt = 4;
-    string updatedAt = 5;
+    int32 balance = 4;
+    string currency = 5;
+    string createdAt = 6;
+    string updatedAt = 7;
 }
 
 message UserData {
@@ -85,4 +88,10 @@ message NewUser {
     string name = 1;
     string email = 2;
     string password = 3;
+}
+
+message Amount {
+    int32 id = 3;
+    int32 balance = 1;
+    string currency = 2;
 }
